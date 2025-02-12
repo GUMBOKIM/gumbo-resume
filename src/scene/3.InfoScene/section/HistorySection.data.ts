@@ -16,7 +16,6 @@ const HistorySectionData: HistoryProps[] = [
             {name: '티맥스A&C', content: 'Front', startDate: '2022.03', endDate: '2023. 08'},
             {name: '씽소프트', content: 'Backend', startDate: '2021.08', endDate: '2022.03'},
             {name: 'HL그린파워', content: '비개발 직군', startDate: '2019.04', endDate: '2020.11'},
-
         ]
     }
 ];
