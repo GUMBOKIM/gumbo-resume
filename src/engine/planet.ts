@@ -3,7 +3,7 @@ import {
   GUMBO_PAL, GUMBO_IDLE, GUMBO_WALK_A,
   TREE, TREE_PAL, HOUSE, HOUSE_PAL, OFFICE, OFFICE_PAL,
   LAB, LAB_PAL, FACTORY, FACTORY_PAL, MAILBOX, MAIL_PAL,
-  LAMP, LAMP_PAL, FLOWER, FLOWER_PAL,
+  LAMP, LAMP_PAL, FLOWER, FLOWER_PAL, CHUTE, CHUTE_PAL, CLOUD, CLOUD_PAL,
 } from './sprites';
 import { skyNow, hexLerp } from './sky';
 import type { SectionKey } from '../data/sections';
@@ -108,30 +108,53 @@ export function createPlanetEngine(
   let raf = 0;
   let last = performance.now();
 
+  /* 인트로: 낙하산 착륙 (검은보급) */
+  let intro = !reduced;
+  let introY = -1; // 표면 위 높이(px). -1 = 첫 프레임에 초기화
+  interface Particle { x: number; y: number; vx: number; vy: number; life: number; }
+  const dust: Particle[] = [];
+  function puff(cx: number, cy: number, n: number, spread: number, s: number) {
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * Math.PI;
+      dust.push({
+        x: cx + (Math.random() - 0.5) * spread,
+        y: cy,
+        vx: Math.cos(a) * (3 + Math.random() * 6) * s,
+        vy: -Math.abs(Math.sin(a)) * (4 + Math.random() * 5) * s,
+        life: 0.45 + Math.random() * 0.3,
+      });
+    }
+  }
+  let prevStep = false;
+
   function frame(t: number) {
     const dt = Math.min(0.05, (t - last) / 1000);
     last = t;
 
     let dir = 0;
-    if (held.has('left')) dir -= 1;
-    if (held.has('right')) dir += 1;
-    if (dir) autoTarget = null;
-    let speed = ROT_SPEED;
-    if (autoTarget !== null) {
-      const diff = wrapA(autoTarget - rot);
-      if (Math.abs(diff) < 0.02) { rot = autoTarget; autoTarget = null; }
-      else {
-        dir = diff > 0 ? -1 : 1;
-        speed = ROT_SPEED * (1 + Math.abs(diff) * 1.3); // 멀수록 가속, 접근하며 감속
+    if (!intro) {
+      if (held.has('left')) dir -= 1;
+      if (held.has('right')) dir += 1;
+      if (dir) autoTarget = null;
+      let speed = ROT_SPEED;
+      if (autoTarget !== null) {
+        const diff = wrapA(autoTarget - rot);
+        if (Math.abs(diff) < 0.02) { rot = autoTarget; autoTarget = null; }
+        else {
+          dir = diff > 0 ? -1 : 1;
+          speed = ROT_SPEED * (1 + Math.abs(diff) * 1.3); // 멀수록 가속, 접근하며 감속
+        }
       }
+      if (dir) { rot -= dir * speed * dt; face = dir; walkT += dt; }
     }
-    if (dir) { rot -= dir * speed * dt; face = dir; walkT += dt; }
     moving = !!dir;
 
     // 섹션 감지 (엣지 트리거)
     let near: SectionKey | null = null;
-    for (const p of PROPS) {
-      if (p.key && Math.abs(wrapA(p.a + rot)) < NEAR) near = p.key;
+    if (!intro) {
+      for (const p of PROPS) {
+        if (p.key && Math.abs(wrapA(p.a + rot)) < NEAR) near = p.key;
+      }
     }
     if (near !== currentKey) { currentKey = near; onSection(near); }
 
@@ -174,6 +197,21 @@ export function createPlanetEngine(
       ctx.beginPath(); ctx.arc(bodyX - br * 0.3, bodyY - br * 0.2, br * 0.24, 0, TAU); ctx.fill();
       ctx.beginPath(); ctx.arc(bodyX + br * 0.25, bodyY + br * 0.3, br * 0.16, 0, TAU); ctx.fill();
     }
+    // 구름 (낮)
+    if (sky.light > 0.25) {
+      const ca = Math.min(1, (sky.light - 0.25) / 0.5);
+      const cpx = Math.max(2, Math.round(R / 150));
+      const drift = reduced ? 0 : t * 0.006;
+      ctx.globalAlpha = 0.85 * ca;
+      const lanes: [number, number, number][] = [[0.15, 0.13, 1.0], [0.62, 0.24, 0.72]];
+      for (const [fx, fy, sc] of lanes) {
+        const w = CLOUD[0].length * cpx * sc;
+        const x = ((cv.width * fx - drift * cpx * sc) % (cv.width + w) + cv.width + w) % (cv.width + w) - w;
+        drawGrid(ctx, CLOUD, CLOUD_PAL, cpx * sc, x, cv.height * fy);
+      }
+      ctx.globalAlpha = 1;
+    }
+
     // 유성 (밤)
     if (!reduced && sky.light < 0.2) {
       const cyc = (t / 5200) % 1;
@@ -246,8 +284,9 @@ export function createPlanetEngine(
       drawGrid(ctx, p.grid, p.pal, s2, (-p.grid[0].length / 2) * s2, -p.grid.length * s2);
       ctx.restore();
       if (p.label) {
-        const lx = CX + Math.sin(a) * (R + p.grid.length * s2 * 0.55 + 26);
-        const ly = CY - Math.cos(a) * (R + p.grid.length * s2 * 0.55 + 26);
+        const lift = R + p.grid.length * s2 + 20;
+        const lx = CX + Math.sin(a) * lift;
+        const ly = CY - Math.cos(a) * lift;
         labels.push([p.label, lx, ly, Math.abs(wrapA(a)) < 0.35]);
       }
       if (p.pal === LAMP_PAL && sky.light < 0.4) {
@@ -271,12 +310,56 @@ export function createPlanetEngine(
     const chPx = Math.max(2, Math.round(R / 104));
     const step = moving && Math.floor(walkT * 12) % 2 === 0;
     const rows = step ? GUMBO_WALK_A : GUMBO_IDLE;
-    const gy = CY - R;
-    ctx.fillStyle = 'rgba(0,0,0,0.35)';
-    ctx.beginPath();
-    ctx.ellipse(CX, CY - R + chPx * 1.2, chPx * 7, chPx * 2.2, 0, 0, TAU);
-    ctx.fill();
-    drawGrid(ctx, rows, GUMBO_PAL, chPx, CX - (rows[0].length / 2) * chPx, gy - rows.length * chPx + (step ? chPx : 0), face < 0);
+    let gy = CY - R;
+    let ox = 0;
+
+    // 인트로: 낙하산 하강
+    if (intro) {
+      if (introY < 0) introY = CY - R + rows.length * chPx + CHUTE.length * chPx; // 화면 위 바깥에서 시작
+      introY -= cv.height * 0.22 * dt;
+      ox = Math.sin(t / 380) * chPx * 1.6;
+      if (introY <= 0) {
+        intro = false;
+        introY = 0;
+        puff(CX, CY - R + chPx, 12, chPx * 10, chPx);
+      }
+      gy -= Math.max(0, introY);
+    }
+
+    // 걸음 먼지
+    if (!intro && step && !prevStep) {
+      puff(CX - face * chPx * 5, CY - R + chPx, 2, chPx * 3, chPx * 0.8);
+    }
+    prevStep = step;
+
+    // 그림자 (공중에 있으면 축소)
+    const shClose = Math.max(0, 1 - introY / (cv.height * 0.4));
+    if (shClose > 0) {
+      ctx.fillStyle = `rgba(0,0,0,${0.35 * shClose})`;
+      ctx.beginPath();
+      ctx.ellipse(CX, CY - R + chPx * 1.2, chPx * 7 * shClose, chPx * 2.2 * shClose, 0, 0, TAU);
+      ctx.fill();
+    }
+    const chX = CX - (rows[0].length / 2) * chPx + ox;
+    drawGrid(ctx, rows, GUMBO_PAL, chPx, chX, gy - rows.length * chPx + (step ? chPx : 0), face < 0);
+    if (intro) {
+      drawGrid(ctx, CHUTE, CHUTE_PAL, chPx, chX, gy - (rows.length + CHUTE.length) * chPx);
+    }
+
+    // 먼지 파티클
+    for (let i = dust.length - 1; i >= 0; i--) {
+      const p = dust[i];
+      p.life -= dt;
+      if (p.life <= 0) { dust.splice(i, 1); continue; }
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      p.vy += chPx * 14 * dt;
+      ctx.globalAlpha = Math.min(1, p.life * 2.2);
+      ctx.fillStyle = '#cabfa6';
+      const ps = Math.max(2, chPx * 0.6);
+      ctx.fillRect(p.x, p.y, ps, ps);
+    }
+    ctx.globalAlpha = 1;
 
     raf = requestAnimationFrame(frame);
   }
@@ -291,6 +374,7 @@ export function createPlanetEngine(
       removeEventListener('resize', layout);
     },
     walkTo(key) {
+      if (intro) return;
       autoTarget = wrapA(-BUILDING_ANGLE[key]);
     },
     setControl(name, on) {

@@ -73,6 +73,7 @@ body {
 .panel {
   position: absolute; left: 50%; transform: translateX(-50%);
   top: 18px; width: min(calc(100% - 36px), 640px); max-height: calc(52% - 20px);
+  animation: panel-in 200ms ease-out;
   display: flex; flex-direction: column;
   background: rgba(27, 29, 41, 0.94);
   border: 3px solid var(--ink); border-radius: 2px;
@@ -88,7 +89,20 @@ body {
   width: 28px; height: 28px;
 }
 .panel-head .close:hover { color: var(--ink); border-color: var(--accent); }
+@keyframes panel-in {
+  from { opacity: 0; transform: translate(-50%, 10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel { animation: none; }
+}
 .panel-body { overflow-y: auto; padding-right: 12px; margin-top: 6px; font-size: 14px; }
+.panel-body::-webkit-scrollbar { width: 10px; }
+.panel-body::-webkit-scrollbar-track { background: transparent; }
+.panel-body::-webkit-scrollbar-thumb {
+  background: var(--line); border: 2px solid var(--panel); border-radius: 0;
+}
+.panel-body::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 .panel-body section { margin-bottom: 14px; }
 .panel-body h4 {
   margin: 0 0 6px; font-size: 14px; color: var(--accent); letter-spacing: 1px;

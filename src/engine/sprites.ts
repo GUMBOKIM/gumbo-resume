@@ -198,6 +198,29 @@ export const LAMP = norm([
   '..DDD..',
 ]);
 
+/* 낙하산 캐노피 — 인트로 착륙 연출용 (검은보급) */
+export const CHUTE_PAL: Palette = { D: '#1c1a20', P: '#f08c1e', p: '#ffc46b' };
+export const CHUTE = norm([
+  '...DDDDDDDDDD...',
+  '..DPpPPpPPpPPD..',
+  '.DPpPPpPPpPPpPD.',
+  '.DPpPPpPPpPPpPD.',
+  '..DDDDDDDDDDDD..',
+  '..D..........D..',
+  '..D..........D..',
+]);
+
+export const CLOUD_PAL: Palette = { D: '#dbe4f2', C: '#ffffff' };
+export const CLOUD = norm([
+  '......DDDDD.......',
+  '....DDCCCCCDD.....',
+  '..DDCCCCCCCCCD....',
+  '.DCCCCCCCCCCCCDD..',
+  'DCCCCCCCCCCCCCCCD.',
+  'DCCCCCCCCCCCCCCCCD',
+  '.DDDDDDDDDDDDDDDD.',
+]);
+
 export const FLOWER_PAL: Palette = { P: '#f78fa0', W: '#f7f3ea', Y: '#ffd97a', G: '#4c9e46' };
 export const FLOWER = norm([
   '.P.',

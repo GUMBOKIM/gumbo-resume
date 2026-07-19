@@ -4,7 +4,7 @@ export const SECTION_ORDER: { key: SectionKey; title: string; panelTitle?: strin
   { key: 'profile', title: '프로필' },
   { key: 'career', title: '경력', panelTitle: '경력사항' },
   { key: 'skill', title: '기술', panelTitle: '기술 스택' },
-  { key: 'experience', title: '업무경험', panelTitle: '업무 경험' },
+  { key: 'experience', title: '경험', panelTitle: '업무 경험' },
   { key: 'contact', title: '연락' },
 ];
 
