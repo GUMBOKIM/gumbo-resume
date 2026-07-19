@@ -1,6 +1,6 @@
 import {
   drawGrid, hash, type Grid, type Palette,
-  GUMBO_PAL, GUMBO_IDLE, GUMBO_WALK_A,
+  GUMBO_PAL, GUMBO_IDLE, GUMBO_WALK_A, GUMBO_BLINK,
   TREE, TREE_PAL, HOUSE, HOUSE_PAL, OFFICE, OFFICE_PAL,
   LAB, LAB_PAL, FACTORY, FACTORY_PAL, MAILBOX, MAIL_PAL,
   LAMP, LAMP_PAL, FLOWER, FLOWER_PAL, CHUTE, CHUTE_PAL, CLOUD, CLOUD_PAL,
@@ -267,6 +267,10 @@ export function createPlanetEngine(
     ctx.strokeStyle = 'rgba(20,40,18,0.8)';
     ctx.lineWidth = Math.max(2, R * 0.008);
     ctx.beginPath(); ctx.arc(CX, CY, R, 0, TAU); ctx.stroke();
+    // 윗면 림라이트 (은은한 지평선 하이라이트)
+    ctx.strokeStyle = `rgba(255,255,220,${0.05 + sky.light * 0.06})`;
+    ctx.lineWidth = Math.max(2, R * 0.012);
+    ctx.beginPath(); ctx.arc(CX, CY, R - R * 0.004, -Math.PI / 2 - 0.9, -Math.PI / 2 + 0.9); ctx.stroke();
 
     /* ----- 소품 ----- */
     const px = Math.max(2, Math.round(R / 120));
@@ -298,6 +302,17 @@ export function createPlanetEngine(
         ctx.fillStyle = lg;
         ctx.beginPath(); ctx.arc(gx, gy, px * 26, 0, TAU); ctx.fill();
       }
+      // 밤 창문 온기
+      if (p.key && p.key !== 'contact' && sky.light < 0.35) {
+        const mid = R + p.grid.length * s2 * 0.5;
+        const gx = CX + Math.sin(a) * mid;
+        const gy = CY - Math.cos(a) * mid;
+        const wg = ctx.createRadialGradient(gx, gy, 0, gx, gy, s2 * p.grid[0].length * 0.9);
+        wg.addColorStop(0, 'rgba(255,217,122,0.10)');
+        wg.addColorStop(1, 'rgba(255,217,122,0)');
+        ctx.fillStyle = wg;
+        ctx.beginPath(); ctx.arc(gx, gy, s2 * p.grid[0].length * 0.9, 0, TAU); ctx.fill();
+      }
     }
     ctx.textAlign = 'center';
     for (const [txt, lx, ly, hot] of labels) {
@@ -309,7 +324,8 @@ export function createPlanetEngine(
     /* ----- 검보 ----- */
     const chPx = Math.max(2, Math.round(R / 104));
     const step = moving && Math.floor(walkT * 12) % 2 === 0;
-    const rows = step ? GUMBO_WALK_A : GUMBO_IDLE;
+    const blink = !moving && !intro && Math.floor(t / 180) % 20 < 2; // 3.6초마다 깜빡
+    const rows = step ? GUMBO_WALK_A : blink ? GUMBO_BLINK : GUMBO_IDLE;
     let gy = CY - R;
     let ox = 0;
 

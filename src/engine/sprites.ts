@@ -67,6 +67,9 @@ export const GUMBO_IDLE = norm([
 export const GUMBO_WALK_A = GUMBO_IDLE.map((r, i) =>
   i === 20 || i === 21 ? '....DNNDDNND....' : i === 22 ? '....DTTDDTTD....' : r,
 );
+export const GUMBO_BLINK = GUMBO_IDLE.map((r, i) =>
+  i === 8 ? '.DOoFFFFFFFFoOD.' : i === 9 ? '.DOoFDDFFDDFoOD.' : r,
+);
 
 /* ---------- 소품 ---------- */
 export const TREE_PAL: Palette = { D: '#1e3117', G: '#4c9e46', L: '#6dbf5e', B: '#7a5230', b: '#5c3c21' };
