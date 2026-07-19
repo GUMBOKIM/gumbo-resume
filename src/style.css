@@ -145,7 +145,12 @@ a.chip:hover { border-color: var(--accent); color: var(--accent); }
 .project { margin-bottom: 12px; }
 .project-head { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
 .project .tech { color: var(--muted); font-size: var(--fs-small); margin: 2px 0 4px; }
-.desc li { margin-left: 18px; }
+
+/* 크롤러/스크린리더용 시맨틱 문서 (시각적으로 숨김) */
+.sr-doc {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
 
 /* ----- 모바일 터치 컨트롤 ----- */
 .ctl { position: absolute; bottom: 18px; display: none; gap: 8px; z-index: 3; }

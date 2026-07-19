@@ -23,24 +23,26 @@
 
 ## 기술
 
-- React 19 + TypeScript + Vite
-- 렌더링: Canvas 2D (라이브러리 없음), 엔진은 순수 TS 모듈(`src/engine/`)로 분리
+- **프레임워크 없음** — 순수 TypeScript + Vite. 전송량 총 ~73KB (JS gzip 8.4KB)
+- 렌더링: Canvas 2D (라이브러리 없음)
+- SEO: 이력서 콘텐츠를 빌드 타임에 시맨틱 HTML + JSON-LD(Person)로 index.html에 주입 —
+  크롤러/스크린리더는 완전한 문서를 읽음. 런타임 패널과 같은 렌더러를 공유해 내용이 어긋나지 않음
 - 폰트: DungGeunMo 서브셋 (243KB → 56KB)
 
 ## 구조
 
 ```
 src/
-├── engine/          # 캔버스 엔진 (React 비의존)
+├── engine/          # 캔버스 엔진
 │   ├── sprites.ts   # 도트 스프라이트 데이터 + 그리기
 │   ├── sky.ts       # 실시간 낮/밤 하늘
-│   └── planet.ts    # 행성 렌더 루프, 이동/점프, 섹션 감지
+│   └── planet.ts    # 행성 렌더 루프, 이동, 섹션 감지, 인트로 낙하
 ├── data/
 │   └── sections.ts  # 이력서 콘텐츠 (프로필/경력/기술/업무경험/연락)
-├── components/
-│   └── SectionPanel.tsx
-├── App.tsx          # 메뉴/시계/패널/터치 컨트롤
-└── main.tsx
+├── ui/
+│   ├── panels.ts    # 섹션 HTML 렌더러 (런타임 패널 + SEO 공용)
+│   └── seo.ts       # 빌드 타임 SEO 문서 + JSON-LD
+└── main.ts          # 메뉴/시계/패널/터치 컨트롤 (바닐라 DOM)
 ```
 
 ## 개발
