@@ -102,7 +102,7 @@ export function createPlanetEngine(
   addEventListener('resize', layout);
 
   /* ----- 상태 ----- */
-  let rot = 0.55;
+  let rot = 0.95;
   let face = 1, moving = false, walkT = 0;
   let currentKey: SectionKey | null = null;
   let raf = 0;

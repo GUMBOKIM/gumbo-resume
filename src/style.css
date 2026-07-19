@@ -51,7 +51,23 @@ body {
 .menu button.on { background: var(--accent); color: #1a1204; border-color: var(--accent); }
 
 .clock { color: var(--ink); font-size: 14px; text-shadow: 2px 2px 0 var(--shadow); }
-.hint { margin-top: 6px; color: var(--muted); font-size: 12px; text-shadow: 2px 2px 0 var(--shadow); }
+
+.intro-hint {
+  position: absolute; left: 50%; bottom: 11%; transform: translateX(-50%);
+  color: var(--ink); font-size: 14px; letter-spacing: 1px;
+  text-shadow: 2px 2px 0 var(--shadow);
+  animation: hint-fade 7s ease forwards;
+  pointer-events: none; z-index: 2; white-space: nowrap;
+}
+@keyframes hint-fade {
+  0% { opacity: 0; }
+  12% { opacity: 0.9; }
+  80% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro-hint { animation: none; opacity: 0.9; }
+}
 
 /* ----- 섹션 패널 ----- */
 .panel {
@@ -120,7 +136,7 @@ a.chip:hover { border-color: var(--accent); color: var(--accent); }
 
 @media (pointer: coarse) {
   .ctl { display: flex; }
-  .hint { display: none; }
+  .intro-hint { display: none; }
 }
 
 /* 좁은 화면 (터치 여부 무관) */
@@ -130,7 +146,6 @@ a.chip:hover { border-color: var(--accent); color: var(--accent); }
   .menu button { text-align: center; padding: 9px 2px 8px; font-size: 12px; }
   .menu .arr { display: none; }
   .ui.top-right { top: auto; bottom: 20px; left: 50%; right: auto; transform: translateX(-50%); text-align: center; }
-  .hint { display: none; }
   .panel { top: auto; bottom: 88px; max-height: 52%; padding: 10px 4px 10px 14px; }
   .panel-head h3 { font-size: 14px; }
   .panel-head .close { width: 24px; height: 24px; font-size: 15px; }

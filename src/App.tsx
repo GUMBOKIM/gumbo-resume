@@ -25,7 +25,13 @@ export default function App() {
   const engineRef = useRef<PlanetEngine | null>(null);
   const [active, setActive] = useState<SectionKey | null>(null);
   const [dismissed, setDismissed] = useState(false);
+  const [showHint, setShowHint] = useState(true);
   const clock = useClock();
+
+  useEffect(() => {
+    const id = setTimeout(() => setShowHint(false), 7000);
+    return () => clearTimeout(id);
+  }, []);
 
   useEffect(() => {
     const cv = canvasRef.current;
@@ -64,8 +70,9 @@ export default function App() {
 
       <div className="ui top-right">
         <div className="clock">{clock}</div>
-        <div className="hint">◀ ▶ / A D : 걷기<br />메뉴를 누르면 검보가 걸어갑니다</div>
       </div>
+
+      {showHint && <div className="intro-hint">← → 로 행성을 걸어보세요</div>}
 
       {active && !dismissed && (
         <SectionPanel section={active} onClose={() => setDismissed(true)} />
