@@ -53,7 +53,7 @@ export interface PlanetEngine {
   setControl(name: ControlName, on: boolean): void;
 }
 
-const ROT_SPEED = 1.9;
+const ROT_SPEED = 2.3;
 const NEAR = 0.12;
 
 export function createPlanetEngine(
@@ -142,7 +142,7 @@ export function createPlanetEngine(
         if (Math.abs(diff) < 0.02) { rot = autoTarget; autoTarget = null; }
         else {
           dir = diff > 0 ? -1 : 1;
-          speed = ROT_SPEED * (1 + Math.abs(diff) * 1.3); // 멀수록 가속, 접근하며 감속
+          speed = ROT_SPEED * (1 + Math.abs(diff) * 1.6); // 멀수록 가속, 접근하며 감속
         }
       }
       if (dir) { rot -= dir * speed * dt; face = dir; walkT += dt; }
@@ -332,12 +332,12 @@ export function createPlanetEngine(
     // 인트로: 낙하산 하강
     if (intro) {
       if (introY < 0) introY = CY - R + rows.length * chPx + CHUTE.length * chPx; // 화면 위 바깥에서 시작
-      introY -= cv.height * 0.22 * dt;
+      introY -= cv.height * 1.15 * dt;
       ox = Math.sin(t / 380) * chPx * 1.6;
       if (introY <= 0) {
         intro = false;
         introY = 0;
-        puff(CX, CY - R + chPx, 12, chPx * 10, chPx);
+        puff(CX, CY - R + chPx, 18, chPx * 12, chPx * 1.3);
       }
       gy -= Math.max(0, introY);
     }
