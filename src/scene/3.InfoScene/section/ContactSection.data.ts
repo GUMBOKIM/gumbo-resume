@@ -3,15 +3,9 @@ import {ContactIconProps} from "./ContactSection.style";
 export const ContactData: ContactIconProps[] = [
     {
         type: "link",
-        name: "Github",
-        location: "scene/3/contact/github.png",
-        destination: "https://github.com/GUMBOKIM/gumbo-main"
-    },
-    {
-        type: "link",
-        name: "Tistory",
-        location: "scene/3/contact/tistory.png",
-        destination: "https://gum-equal-supply.tistory.com/"
+        name: "Blog",
+        location: "scene/3/contact/blog.svg",
+        destination: "https://blog.daeheekim.dev"
     },
     {
         type: "phone",
