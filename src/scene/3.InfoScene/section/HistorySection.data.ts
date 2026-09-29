@@ -12,8 +12,9 @@ const HistorySectionData: HistoryProps[] = [
     {
         kind: '경력',
         histories: [
-            {name: '스켈터랩스', content: 'Fullstack', startDate: '2023.08', endDate: ' '},
-            {name: '티맥스A&C', content: 'Front', startDate: '2022.03', endDate: '2023. 08'},
+            {name: '유닛블랙', content: 'Fullstack', startDate: '2026.01', endDate: ' '},
+            {name: '스켈터랩스', content: 'Fullstack', startDate: '2023.08', endDate: '2025.09'},
+            {name: '티맥스 와플', content: 'Fullstack', startDate: '2022.03', endDate: '2023.08'},
             {name: '씽소프트', content: 'Backend', startDate: '2021.08', endDate: '2022.03'},
             {name: 'HL그린파워', content: '비개발 직군', startDate: '2019.04', endDate: '2020.11'},
         ]

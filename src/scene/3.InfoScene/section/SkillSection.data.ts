@@ -18,8 +18,8 @@ const SkillSectionData: SkillProps[] = [
         kind: '프론트엔드',
         skills: [
             {name: 'React', src: 'frontend/react.png'},
+            {name: 'TanStack Query', src: 'frontend/reactquery.png'},
             {name: 'Lit Element', src: 'frontend/lit-element.png'},
-
         ]
     },
 
