@@ -176,8 +176,7 @@ export interface ContactLink {
 export const CONTACT: { email: string; links: ContactLink[] } = {
   email: 'dae4805@naver.com',
   links: [
-    { name: 'GitHub', href: 'https://github.com/GUMBOKIM' },
-    { name: 'Tistory 블로그', href: 'https://gum-equal-supply.tistory.com/' },
+    { name: '블로그', href: 'https://blog.daeheekim.dev' },
     { name: '전화', href: 'tel:010-9929-4805' },
     { name: '문자', href: 'sms:010-9929-4805' },
     { name: '카카오톡', href: 'http://qr.kakao.com/talk/BPlXC40l1V3ar3EZ08auO3mO7bs-' },
