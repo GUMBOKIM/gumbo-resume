@@ -17,12 +17,7 @@ const ProjectSectionData: ProjectInfoProps[] = [
                     '- 홈·장부·세무·전체 탭 화면, 라우팅·상태관리 구조 설계\n' +
                     '- 디자인 시스템(SDS) 컴포넌트 설계 및 전 화면 적용, GA4 계측\n' +
                     '\n' +
-                    'Backend\n' +
-                    '\n' +
-                    '- 홈택스 연동 민원증명 발급 (API·화면·파일 저장)\n' +
-                    '- 외부기관 오류 처리 통일, 타임아웃 조정으로 발급 실패 감소\n' +
-                    '- 홈택스 앱링크 오픈 리다이렉트(CWE-601) 신고, 국세청 개선 완료\n' +
-                    '\n' +
+
                     'App\n' +
                     '\n' +
                     '- Capacitor 기반 iOS·Android 앱 전환 및 스토어 출시\n' +
@@ -32,7 +27,11 @@ const ProjectSectionData: ProjectInfoProps[] = [
                     'DX\n' +
                     '\n' +
                     '- TestFlight·Play Console 배포 파이프라인, OTA 업데이트\n' +
-                    '- MSW 시나리오 목킹 + Playwright·AI 에이전트 자동 검증 환경'
+                    '- MSW 시나리오 목킹 + Playwright·AI 에이전트 자동 검증 환경\n' +
+                    '\n' +
+                    'ETC\n' +
+                    '\n' +
+                    '- 홈택스 앱링크 오픈 리다이렉트(CWE-601) 신고, 국세청 개선 완료'
             }
         ],
     },
