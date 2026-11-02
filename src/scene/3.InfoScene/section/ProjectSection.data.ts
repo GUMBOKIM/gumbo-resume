@@ -15,7 +15,13 @@ const ProjectSectionData: ProjectInfoProps[] = [
                     '\n' +
                     '- 서비스 프론트엔드 0→1 구축 및 정식 출시\n' +
                     '- 홈·장부·세무·전체 탭 화면, 라우팅·상태관리 구조 설계\n' +
-                    '- 디자인 시스템(SDS) 컴포넌트 설계 및 전 화면 적용\n' +
+                    '- 디자인 시스템(SDS) 컴포넌트 설계 및 전 화면 적용, GA4 계측\n' +
+                    '\n' +
+                    'Backend\n' +
+                    '\n' +
+                    '- 홈택스 연동 민원증명 발급 (API·화면·파일 저장)\n' +
+                    '- 외부기관 오류 처리 통일, 타임아웃 조정으로 발급 실패 감소\n' +
+                    '- 홈택스 앱링크 오픈 리다이렉트(CWE-601) 신고, 국세청 개선 완료\n' +
                     '\n' +
                     'App\n' +
                     '\n' +
@@ -36,7 +42,7 @@ const ProjectSectionData: ProjectInfoProps[] = [
             {
                 role: 'Product Engineer',
                 title: 'Bella',
-                period: '2023.08-2025.09',
+                period: '2023.08-2025.02',
                 techStack: 'React, NestJS, Lit-element',
                 description: 'LLM 챗봇 플랫폼 및 Backoffice\n' +
                     '\n' +
@@ -53,17 +59,18 @@ const ProjectSectionData: ProjectInfoProps[] = [
                     '\n' +
                     'Infra\n' +
                     '\n' +
-                    '- Bazel 빌드 마이그레이션\n' +
-                    '- Kubernetes 기반 애플리케이션 배포'
+                    '- Bazel 빌드 마이그레이션'
             },
             {
                 role: 'Fullstack Developer',
                 title: '고객사 AI 프로젝트',
-                period: '2023.08-2025.09',
-                techStack: 'Spring Boot, Vue, Python',
+                period: '2024.08-2025.09',
+                techStack: 'NestJS, AWS Bedrock, Python',
                 description: '- 채용 도메인: LLM으로 비정형 이력서·공고를 정형 데이터로 추출\n' +
-                    '- 금융권 온프레미스 챗봇: RAG 데이터 마이그레이션, 응답 품질 자동 평가\n' +
-                    '- 대기업·금융권 POC 대응'
+                    '- 임베딩 전 전처리 개선으로 매칭 정확도 50% → 80%, CI/CD 구성\n' +
+                    '- 금융권 온프레미스 RAG 챗봇: 문서 적재 배치, LLM 응답 품질 자동 평가\n' +
+                    '- 사내 안내 챗봇(MS Teams) 개발 참여\n' +
+                    '- 대기업·금융권 PoC 대응'
             }
         ],
     },
@@ -134,10 +141,11 @@ const ProjectSectionData: ProjectInfoProps[] = [
         projects: [
             {
                 role: '1인 풀스택',
-                title: '물류 WMS',
-                period: '2025.07-2025.12',
-                techStack: 'React, NestJS, Electron, PWA',
+                title: '물류 WMS 구축·운영',
+                period: '2021-',
+                techStack: 'Spring Boot, NestJS, React, Electron, PWA',
                 description: '- 20인 규모 물류 회사의 수기·엑셀 업무를 웹 시스템으로 전환\n' +
+                    '- 클라우드 없이 자체 서버 PC로 운영 중\n' +
                     '- 안드로이드 PWA 바코드 스캐너 (일 평균 10,000박스 입출하)\n' +
                     '- 고객사 VAN 시스템 자동화 Electron 앱 (인당 업무 하루 1시간 단축)'
             }

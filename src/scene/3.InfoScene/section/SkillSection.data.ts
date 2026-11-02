@@ -19,6 +19,9 @@ const SkillSectionData: SkillProps[] = [
         skills: [
             {name: 'React', src: 'frontend/react.png'},
             {name: 'TanStack Query', src: 'frontend/reactquery.png'},
+            {name: 'TanStack Router', src: 'frontend/tanstack-router.png'},
+            {name: 'CapacitorJS', src: 'frontend/capacitor.png'},
+            {name: 'Electron', src: 'frontend/electron.png'},
             {name: 'Lit Element', src: 'frontend/lit-element.png'},
         ]
     },
